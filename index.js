@@ -10,6 +10,15 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+// Token validation middleware
+app.use((req, res, next) => {
+  const token = req.headers['authorization'];
+  if (!token || token !== `Bearer ${process.env.API_KEY}`) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  next();
+});
+
 // DataForSEO credentials from environment variables
 const DATAFORSEO_LOGIN = process.env.DATAFORSEO_LOGIN;
 const DATAFORSEO_PASSWORD = process.env.DATAFORSEO_PASSWORD;
