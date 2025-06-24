@@ -13,23 +13,15 @@ app.use(express.json());
 // Token validation middleware with debug logs
 app.use((req, res, next) => {
   const token = req.headers['authorization'];
-  console.log('Incoming Authorization header:', token);  // <-- logs the incoming token
-  console.log('Expected token:', `Bearer ${process.env.API_KEY}`);  // <-- logs the expected token from env
+  const expectedToken = `Bearer ${process.env.API_KEY}`;
 
-  if (!token || token !== `Bearer ${process.env.API_KEY}`) {
+  console.log('Incoming Authorization header:', token);
+  console.log('Expected Authorization header:', expectedToken);
+
+  if (!token || token !== expectedToken) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  next();
-});
-
-
-// Token validation middleware
-app.use((req, res, next) => {
-  const token = req.headers['authorization'];
-  if (!token || token !== `Bearer ${process.env.API_KEY}`) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
   next();
 });
 
@@ -51,7 +43,6 @@ app.get("/", (req, res) => {
   });
 });
 
-// Health check endpoint
 app.get("/health", (req, res) => {
   res.json({ status: "OK", timestamp: new Date().toISOString() });
 });
@@ -72,7 +63,6 @@ app.post("/ranked_keywords", async (req, res) => {
 
     console.log(`Fetching keywords for domain: ${domain}`);
 
-    // DataForSEO API endpoint for ranked keywords
     const dataForSEOEndpoint =
       "https://api.dataforseo.com/v3/dataforseo_labs/ranked_keywords/live";
 
@@ -87,7 +77,7 @@ app.post("/ranked_keywords", async (req, res) => {
     ];
 
     console.log("AUTH DEBUG", auth);
-    
+
     const response = await axios.post(dataForSEOEndpoint, requestData, {
       auth: auth,
       headers: {
