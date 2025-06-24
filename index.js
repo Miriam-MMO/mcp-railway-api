@@ -10,6 +10,20 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+// Token validation middleware with debug logs
+app.use((req, res, next) => {
+  const token = req.headers['authorization'];
+  console.log('Incoming Authorization header:', token);  // <-- logs the incoming token
+  console.log('Expected token:', `Bearer ${process.env.API_KEY}`);  // <-- logs the expected token from env
+
+  if (!token || token !== `Bearer ${process.env.API_KEY}`) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  next();
+});
+
+
 // Token validation middleware
 app.use((req, res, next) => {
   const token = req.headers['authorization'];
