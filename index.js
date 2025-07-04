@@ -67,7 +67,7 @@ app.post("/ranked_keywords", async (req, res) => {
 
     console.log("AUTH DEBUG", auth);
 
-    console.log('ENV', process.env)
+    console.log('ENV:-', process.env)
 
     const response = await axios.post(dataForSEOEndpoint, requestData, {
       auth: auth,
