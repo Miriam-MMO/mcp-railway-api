@@ -1,7 +1,9 @@
-require("dotenv").config();
-const express = require("express");
-const axios = require("axios");
-const cors = require("cors");
+import dotenv from "dotenv";
+import express from "express";
+import axios from "axios";
+import cors from "cors";
+
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -10,29 +12,14 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Token validation middleware with debug logs
-app.use((req, res, next) => {
-  const token = req.headers['authorization'];
-  const expectedToken = `Bearer ${process.env.API_KEY}`;
-
-  console.log('Incoming Authorization header:', token);
-  console.log('Expected Authorization header:', expectedToken);
-
-  if (!token || token !== expectedToken) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-
-  next();
-});
-
 // DataForSEO credentials from environment variables
-const DATAFORSEO_LOGIN = process.env.DATAFORSEO_LOGIN;
-const DATAFORSEO_PASSWORD = process.env.DATAFORSEO_PASSWORD;
+const DATA_FOR_SEO_LOGIN = process.env.DATAFORSEO_LOGIN;
+const DATA_FOR_SEO_PASSWORD = process.env.DATAFORSEO_PASSWORD;
 
 // Basic auth for DataForSEO
 const auth = {
-  username: DATAFORSEO_LOGIN,
-  password: DATAFORSEO_PASSWORD,
+  username: DATA_FOR_SEO_LOGIN,
+  password: DATA_FOR_SEO_PASSWORD,
 };
 
 // Health check endpoint
@@ -43,6 +30,7 @@ app.get("/", (req, res) => {
   });
 });
 
+// Health check endpoint
 app.get("/health", (req, res) => {
   res.json({ status: "OK", timestamp: new Date().toISOString() });
 });
@@ -63,8 +51,9 @@ app.post("/ranked_keywords", async (req, res) => {
 
     console.log(`Fetching keywords for domain: ${domain}`);
 
+    // DataForSEO API endpoint for ranked keywords
     const dataForSEOEndpoint =
-      "https://api.dataforseo.com/v3/dataforseo_labs/ranked_keywords/live";
+        "https://api.dataforseo.com/v3/dataforseo_labs/ranked_keywords/live";
 
     const requestData = [
       {
@@ -84,6 +73,8 @@ app.post("/ranked_keywords", async (req, res) => {
         "Content-Type": "application/json",
       },
     });
+
+    console.log("Response from DataForSEO:", response.data);
 
     if (response.data && response.data.tasks && response.data.tasks[0]) {
       const result = response.data.tasks[0].result;
