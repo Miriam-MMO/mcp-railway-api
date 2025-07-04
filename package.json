@@ -1,7 +1,7 @@
 {
   "name": "mcp-server",
   "version": "1.0.0",
-  "description": "DataForSEO MCP server for Railway",
+  "description": "DataForSEO MCP server for Railway", 
   "main": "index.js",
   "type": "module",
   "scripts": {
