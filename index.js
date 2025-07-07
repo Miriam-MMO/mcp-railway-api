@@ -32,12 +32,14 @@ app.get("/", (req, res) => {
 
 // Health check endpoint
 app.get("/health", (req, res) => {
+  console.log("Received new request on /health");
   res.json({ status: "OK", timestamp: new Date().toISOString() });
 });
 
 // Main endpoint for ranked keywords
 app.post("/ranked_keywords", async (req, res) => {
   try {
+    console.log("Received new request on /ranked_keywords");
     const {
       domain,
       location = "United States",
