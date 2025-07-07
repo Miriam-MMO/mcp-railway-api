@@ -63,7 +63,7 @@ app.post("/ranked_keywords", async (req, res) => {
         location_name: location,
         language_name: language,
         limit: parseInt(limit),
-        order_by: ["search_volume,desc"],
+        order_by: ["keyword_data.keyword_info.search_volume,desc"]
       },
     ];
 
