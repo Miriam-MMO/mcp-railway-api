@@ -54,8 +54,8 @@ app.post("/ranked_keywords", async (req, res) => {
         console.log(`Fetching keywords for domain: ${domain}`);
 
         // DataForSEO API endpoint for ranked keywords
-        const dataForSEOEndpoint =
-            "https://api.dataforseo.com/v3/dataforseo_labs/ranked_keywords/live";
+        const dataForSEOEndpoint = "https://api.dataforseo.com/v3/dataforseo_labs/google/organic_keywords/live";
+
 
         const requestData = [
             {
