@@ -60,8 +60,9 @@ app.post("/ranked_keywords", async (req, res) => {
         const requestData = [
             {
                 target: domain,
-                location_name: location,
-                language_name: language,
+                location_code: 2826,
+language_code: "en",
+
                 limit: parseInt(limit),
                 order_by: ["keyword_data.keyword_info.search_volume,desc"]
             },
